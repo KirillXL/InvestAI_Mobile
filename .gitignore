@@ -22,8 +22,7 @@ __pycache__/
 *.pyo
 
 # ===== Data & Models =====
-ml/data/raw/
-ml/data/processed/
+ml/data/
 ml/models/
 
 # ===== Secrets =====

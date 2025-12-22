@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DoorFront
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -363,7 +363,7 @@ fun BottomNavigationBar(
 
         IconButton(onClick = { onTabSelected(BottomTab.EXIT) }) {
             Icon(
-                imageVector = Icons.Default.DoorFront,
+                imageVector = Icons.Default.ExitToApp,
                 contentDescription = "Выход",
                 tint = Color(0xFFC62828)
             )

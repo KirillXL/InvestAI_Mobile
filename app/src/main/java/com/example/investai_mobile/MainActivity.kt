@@ -1,5 +1,8 @@
 package com.example.investai_mobile
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,12 +41,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.investai_mobile.ui.auth.RegisterActivity
 import com.example.investai_mobile.ui.theme.InvestAI_MobileTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -138,6 +144,9 @@ fun GreetingPreview() {
  */
 @Composable
 fun HomeScreen() {
+    // Здесь хранится текущее "предсказанное" значение Low
+    val lowValueState = remember { mutableStateOf("--") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -249,8 +258,8 @@ fun HomeScreen() {
                         fontSize = 16.sp
                     )
                     Text(
-                        // пока заглушка вместо настоящего прогноза
-                        text = "123.45",
+                        // показываем текущее значение Low (по умолчанию "--")
+                        text = lowValueState.value,
                         color = Color(0xFFFBC02D),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
@@ -261,7 +270,10 @@ fun HomeScreen() {
 
                 OutlinedButton(
                     onClick = {
-                        // Здесь в будущем будет вызов tflite‑модели
+                        // Вместо настоящего прогноза модели выдаём рандомное число
+                        val randomValue = 100 + Random.nextDouble(from = 0.0, until = 50.0)
+                        // Округляем до 2 знаков после запятой и сохраняем в состояние
+                        lowValueState.value = String.format("%.2f", randomValue)
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -279,6 +291,8 @@ fun HomeScreen() {
  */
 @Composable
 fun SettingsScreen(isLightMode: MutableState<Boolean>) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -319,8 +333,18 @@ fun SettingsScreen(isLightMode: MutableState<Boolean>) {
         // Кнопка "Выход из аккаунта" (красная)
         Button(
             onClick = {
-                // Здесь можно очистить SharedPreferences и вернуть пользователя к регистрации
-                // Сейчас это просто кнопка‑заглушка.
+                // Очищаем локально сохранённые данные пользователя
+                val prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                prefs.edit().clear().apply()
+
+                // Переход обратно на экран регистрации
+                val intent = Intent(context, RegisterActivity::class.java)
+                // Флаги нужны, чтобы очистить стек и не вернуться назад в MainActivity по "Назад"
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context.startActivity(intent)
+
+                // На всякий случай закрываем текущую Activity, если контекстом была она
+                (context as? Activity)?.finish()
             },
             modifier = Modifier.fillMaxWidth(),
             colors = androidx.compose.material3.ButtonDefaults.buttonColors(

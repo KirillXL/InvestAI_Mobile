@@ -1,8 +1,10 @@
 package com.example.investai_mobile.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.investai_mobile.MainActivity
 import com.example.investai_mobile.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
@@ -79,12 +81,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        // Здесь просто показываем "видимость" перехода дальше
-        Toast.makeText(this, "Переход в приложение (заглушка)", Toast.LENGTH_SHORT).show()
-
-        // В реальном приложении здесь должен быть переход в MainActivity:
-        // startActivity(Intent(this, MainActivity::class.java))
-        // finish()
-
+        // Переход на главное окно приложения
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

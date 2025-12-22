@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.InvestAI_Mobile" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.InvestAI"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Основные цвета -->
+        <item name="colorPrimary">@color/yellow_main</item>
+        <item name="colorSecondary">@color/green_main</item>
+
+        <!-- Фон -->
+        <item name="android:windowBackground">@color/dark_gray_bg</item>
+
+    </style>
+
 </resources>
